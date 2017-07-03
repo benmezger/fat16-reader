@@ -8,10 +8,15 @@
 /* prototypes */
 void usage(char *);
 
+/* Show usage help */
 void usage(char *executable){
     fprintf(stdout, "Usage:\n");
-    fprintf(stdout, "\t%s, <fat16-img>\n", executable);
-    fprintf(stdout, "\t       -h | --help for help\n");
+    fprintf(stdout, "\t%s -h | --help for help\n", executable);
+    fprintf(stdout, "\t%s ls <fat16-img> - List files from the FAT16 image\n",\
+            executable);
+    fprintf(stdout, "\t%s cp <path> <dest> <fat16-img> - Copy files from the image path to local dest.\n", executable);
+    fprintf(stdout, "\t%s mv <path> <dest> <fat16-img> - Move files from the path to the FAT16 path\n", executable);
+    fprintf(stdout, "\n");
     fprintf(stdout, "\tfat16-img needs to be a valid Fat16.\n\n");
     fprintf(stdout, "Author: Benjamin Mezger, 2017\n");
 }
