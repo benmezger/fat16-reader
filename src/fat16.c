@@ -36,6 +36,7 @@ int read_bytes(FILE *fp, unsigned int offset, void *buff, unsigned int len){
     return 0;
 }
 
+/* read fat16's bios parameter block */
 void rfat(FILE *fp, struct fat_bpb *bpb){
     read_bytes(fp, 0x0, bpb, sizeof(*bpb));
 }
