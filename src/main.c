@@ -4,6 +4,7 @@
 
 #include "fat16.h"
 #include "commands.h"
+#include "output.h"
 
 /* prototypes */
 void usage(char *);
@@ -47,7 +48,8 @@ int main(int argc, char **argv){
         //}
         char *command = argv[1];
         if (strcmp(command, "ls") == 0){
-            ls(fp, &bpb);
+            struct fat_dir *dirs = ls(fp, &bpb);
+            show_files(dirs);
         }
     }
 
