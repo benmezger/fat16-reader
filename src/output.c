@@ -7,7 +7,7 @@ void show_files(struct fat_dir *dirs){
     while ((cur = dirs++) != NULL){
         if (cur->name[0] == 0)
             break;
-        else if (cur->name[0] == 0xE5)
+        else if (cur->name[0] == DIR_FREE_ENTRY)
             continue;
         fprintf(stdout, "%.*s\n", (int) (sizeof(cur->name) / sizeof(char)), cur->name);
     }

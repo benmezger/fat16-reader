@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#define DIR_FREE_ENTRY 0xE5
+
 #define DIR_ATTR_READONLY 1 << 0 /* file is read only */
 #define DIR_ATTR_HIDDEN 1 << 1 /* file is hidden */
 #define DIR_ATTR_SYSTEM 1 << 2 /* system file (also hidden) */
