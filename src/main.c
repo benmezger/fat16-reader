@@ -34,7 +34,7 @@ int main(int argc, char **argv){
         exit(0);
     }
     else if (argc >= 3 || argc >= 4){
-        FILE *fp = fopen(argv[2], "rb");
+        FILE *fp = fopen(argv[argc - 1], "rb+");
         if (!fp){
             fprintf(stdout, "Could not open file %s\n", argv[2]);
             exit(1);
@@ -42,14 +42,15 @@ int main(int argc, char **argv){
 
         struct fat_bpb bpb;
         rfat(fp, &bpb);
-        //if (!bpb){
-        //    fprintf(stdout, "Could not read Bios parameter boot.\n");
-        //    exit(1);
-        //}
         char *command = argv[1];
+
         if (strcmp(command, "ls") == 0){
             struct fat_dir *dirs = ls(fp, &bpb);
             show_files(dirs);
+        }
+        if (strcmp(command, "mv") == 0){
+            mv(fp, argv[2], &bpb);
+            fclose(fp);
         }
     }
 
