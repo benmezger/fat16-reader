@@ -15,4 +15,10 @@ int write_data(FILE *, char *, struct fat_dir *, struct fat_bpb *);
 /* move file from source to destination */
 void mv(FILE *, char *, struct fat_bpb *);
 
+/* delete the file from the fat directory */
+void rm(FILE *, char *, struct fat_bpb *);
+
+/* helper function: find specific filename in fat_dir */
+struct fat_dir *find(struct fat_dir *, char *, struct fat_bpb *);
+
 #endif
