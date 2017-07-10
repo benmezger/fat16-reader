@@ -4,6 +4,21 @@
 #include "commands.h"
 #include "fat16.h"
 
+
+struct fat_dir *find(struct fat_dir *dirs, char *filename, struct fat_bpb *bpb){
+    struct fat_dir *curdir = malloc(sizeof(struct fat_dir));
+    int dirs_len = sizeof(struct fat_dir) * bpb->possible_rentries;
+    int i;
+
+    for (i=0; i < dirs_len; i++){
+        if (strcmp((char *) dirs[i].name, filename) == 0){
+            curdir = &dirs[0];
+            break;
+        }
+    }
+    return curdir;
+}
+
 struct fat_dir *ls(FILE *fp, struct fat_bpb *bpb){
     int i;
     struct fat_dir *dirs = malloc(sizeof (struct fat_dir) * bpb->possible_rentries);
@@ -43,7 +58,6 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
     if (access(filename, F_OK) < 0)
         return;
     struct fat_dir *dirs = ls(fp, bpb); // find empty place to store file.
-    // fprintf(stdout, "%d\n", bpb_fdata_addr(bpb) + bpb->bytes_p_sect);
     int dirs_len = sizeof (struct fat_dir) * bpb->possible_rentries;
 
     int i;
@@ -58,7 +72,6 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
             break;
         }
     }
-    //fprintf(stdout, "%d\n", data_addrs);
     int dir_addr = bpb_froot_addr(bpb) + i * 32;
     fseek(fp, dir_addr, SEEK_SET);
 
@@ -66,5 +79,29 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
         return;
     if (write_data(fp, filename, curdir, bpb) < 0)
         return;
+
+    free(dirs);
+}
+
+void rm(FILE *fp, char *filename, struct fat_bpb *bpb){
+    struct fat_dir *dirs = ls(fp, bpb);
+    struct fat_dir *curdir = find(dirs, filename, bpb);
+    if (!curdir)
+        return;
+
+    curdir->attr = DIR_FREE_ENTRY; /* set deleted flag */
+    curdir->name[0] = DIR_FREE_ENTRY; /* set deleted flag */
+
+    int dir_addr = bpb_froot_addr(bpb) + curdir->first_clust_low * 32;
+    fseek(fp, dir_addr, SEEK_SET);
+    if (fwrite(curdir, 1, sizeof(struct fat_dir *), fp) != sizeof(struct fat_dir *))
+        return;
+
+    free(dirs);
+    free(curdir);
+}
+
+void cp(FILE *fp, char *filename, struct fat_bpb *bpb){
+    ;; /* TODO */
 }
 
