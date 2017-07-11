@@ -107,6 +107,8 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
 
     if (write_dir(fp, filename, curdir) < 0)
         return;
+
+    fseek(fp, data_addrs, SEEK_SET);
     if (write_data(fp, filename, curdir, bpb) < 0)
         return;
 
