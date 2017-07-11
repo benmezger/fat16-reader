@@ -5,14 +5,14 @@
 #include "fat16.h"
 
 
-struct fat_dir *find(struct fat_dir *dirs, char *filename, struct fat_bpb *bpb){
-    struct fat_dir *curdir = malloc(sizeof(struct fat_dir));
+struct fat_dir find(struct fat_dir *dirs, char *filename, struct fat_bpb *bpb){
+    struct fat_dir curdir;
     int dirs_len = sizeof(struct fat_dir) * bpb->possible_rentries;
     int i;
 
     for (i=0; i < dirs_len; i++){
         if (strcmp((char *) dirs[i].name, filename) == 0){
-            curdir = &dirs[0];
+            curdir = dirs[i];
             break;
         }
     }

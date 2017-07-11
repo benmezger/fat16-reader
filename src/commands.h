@@ -19,6 +19,6 @@ void mv(FILE *, char *, struct fat_bpb *);
 void rm(FILE *, char *, struct fat_bpb *);
 
 /* helper function: find specific filename in fat_dir */
-struct fat_dir *find(struct fat_dir *, char *, struct fat_bpb *);
+struct fat_dir find(struct fat_dir *, char *, struct fat_bpb *);
 
 #endif
