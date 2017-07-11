@@ -117,20 +117,18 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
 
 void rm(FILE *fp, char *filename, struct fat_bpb *bpb){
     struct fat_dir *dirs = ls(fp, bpb);
-    struct fat_dir *curdir = find(dirs, filename, bpb);
-    if (!curdir)
-        return;
+    struct fat_dir curdir = find(dirs, filename, bpb);
 
-    curdir->attr = DIR_FREE_ENTRY; /* set deleted flag */
-    curdir->name[0] = DIR_FREE_ENTRY; /* set deleted flag */
+    curdir.attr = DIR_FREE_ENTRY; /* set deleted flag */
+    curdir.name[0] = DIR_FREE_ENTRY; /* set deleted flag */
 
-    int dir_addr = bpb_froot_addr(bpb) + curdir->first_clust_low * 32;
+    int dir_addr = (bpb_froot_addr(bpb) + curdir.starting_cluster * 32) -
+        sizeof(struct fat_dir); /* move backwards */
+
     fseek(fp, dir_addr, SEEK_SET);
-    if (fwrite(curdir, 1, sizeof(struct fat_dir *), fp) != sizeof(struct fat_dir *))
+    if (fwrite(&curdir, 1, sizeof(struct fat_dir *), fp) != sizeof(struct fat_dir *))
         return;
-
-    free(dirs);
-    free(curdir);
+    // wipe(fp, &curdir, bpb);
 }
 
 void cp(FILE *fp, char *filename, struct fat_bpb *bpb){
