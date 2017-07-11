@@ -18,18 +18,18 @@
 
 #pragma pack(push, 1)
 struct fat_dir {
-    unsigned char name[11]; /* Short name */
+    unsigned char name[11]; /* Short name + file extension */
     uint8_t attr; /* file attributes */
     uint8_t ntres; /* reserved for Windows NT, Set value to 0 when a file is created. */
-    uint8_t time_tenth; /* milisecond timestamp at file creation time */;
-    uint16_t ctr_time; /* time file was created */
-    uint16_t ctr_date; /* date file was created */
-    uint16_t last_access_data; /* last access date (last read/written) */
-    uint16_t first_cluster_high; /* high word of this entry's first clust number */
-    uint16_t write_time; /* time of last write */
-    uint16_t write_date; /* date of last write */
-    uint16_t first_clust_low; /* low word of this entry's first cluster number */
-    uint64_t file_size; /* 32-bit */
+    uint8_t creation_stamp; /* milisecond timestamp at file creation time */;
+    uint16_t creation_time; /* time file was created */
+    uint16_t ctreation_date; /* date file was created */
+    uint16_t last_access_date; /* last access date (last read/written) */
+    uint16_t reserved_fat32; /* reserved for fat32 */
+    uint16_t last_write_time; /* time of last write */
+    uint16_t last_write_date; /* date of last write */
+    uint16_t starting_cluster; /* starting cluster */
+    uint32_t file_size; /* 32-bit */
 };
 
 /* Boot Sector and BPB
