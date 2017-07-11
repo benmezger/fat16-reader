@@ -56,6 +56,16 @@ int write_data(FILE *fp, char *fname, struct fat_dir *dir, struct fat_bpb *bpb){
     }
     return 0;
 }
+
+int wipe(FILE *fp, struct fat_dir *dir, struct fat_bpb *bpb){
+    int start_offset = bpb_froot_addr(bpb) + (bpb->bytes_p_sect * \
+            dir->starting_cluster);
+    int limit_offset = start_offset + dir->file_size;
+
+    while (start_offset <= limit_offset){
+        fseek(fp, ++start_offset, SEEK_SET);
+        if(fputc(0x0, fp) != 0x0)
+            return 01;
     }
     return 0;
 }
