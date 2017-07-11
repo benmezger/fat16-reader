@@ -48,15 +48,14 @@ int write_dir(FILE *fp, char *fname, struct fat_dir *dir){
 int write_data(FILE *fp, char *fname, struct fat_dir *dir, struct fat_bpb *bpb){
 
     FILE *localf = fopen(fname, "r");
-    int *c;
-    int start_offset = bpb_froot_addr(bpb) + (bpb->bytes_p_sect * \
-            dir->first_clust_low);
+    int c;
 
-    while ((*c = fgetc(localf)) != EOF){
-        fseek(fp, start_offset, SEEK_SET);
-        if (fwrite((char *) c, 1, sizeof(c), fp) != sizeof(c))
+    while ((c = fgetc(localf)) != EOF){
+        if (fputc(c, fp) != c)
             return -1;
-        start_offset += 1;
+    }
+    return 0;
+}
     }
     return 0;
 }
