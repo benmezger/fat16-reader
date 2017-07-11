@@ -1,9 +1,16 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "commands.h"
 #include "fat16.h"
 
+off_t fsize(const char *filename){
+    struct stat st;
+    if (stat(filename, &st) == 0)
+        return st.st_size;
+    return -1;
+}
 
 struct fat_dir find(struct fat_dir *dirs, char *filename, struct fat_bpb *bpb){
     struct fat_dir curdir;
