@@ -84,8 +84,13 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
         data_addrs += bpb->bytes_p_sect;
         if (dirs[i].name[0] == '\0'){
             curdir = &dirs[i]; /* found the first free directory entry */
-            curdir->first_clust_low = i + 1;
+            curdir->starting_cluster = i + 1;
             break;
+        }
+        else if (dirs[i].name[0] == DIR_FREE_ENTRY){
+            curdir = &dirs[i];
+            wipe(fp, curdir, bpb);
+            return;
         }
     }
     int dir_addr = bpb_froot_addr(bpb) + i * 32;
