@@ -93,8 +93,17 @@ void mv(FILE *fp, char *filename, struct fat_bpb *bpb){
             return;
         }
     }
+
     int dir_addr = bpb_froot_addr(bpb) + i * 32;
     fseek(fp, dir_addr, SEEK_SET);
+
+    off_t filesize = fsize(filename);
+    if (filesize > 0){
+        curdir->file_size = filesize;
+    }
+    else {
+        return;
+    }
 
     if (write_dir(fp, filename, curdir) < 0)
         return;
