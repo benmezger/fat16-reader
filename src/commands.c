@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include "commands.h"
 #include "fat16.h"
+#include "support.h"
 
 off_t fsize(const char *filename){
     struct stat st;
@@ -38,8 +39,8 @@ struct fat_dir *ls(FILE *fp, struct fat_bpb *bpb){
 }
 
 int write_dir(FILE *fp, char *fname, struct fat_dir *dir){
-    strncpy((char *) dir->name, (char *) fname, sizeof(fname));
-
+    char* name = padding(fname);
+    strcpy((char *) dir->name, (char *) name);
     if (fwrite(dir, 1, sizeof(struct fat_dir), fp) <= 0)
         return -1;
     return 0;
