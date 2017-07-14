@@ -19,7 +19,8 @@ void usage(char *executable){
     fprintf(stdout, "\t%s mv <path> <dest> <fat16-img> - Move files from the path to the FAT16 path\n", executable);
     fprintf(stdout, "\n");
     fprintf(stdout, "\tfat16-img needs to be a valid Fat16.\n\n");
-    fprintf(stdout, "Author: Benjamin Mezger, 2017\n");
+    fprintf(stdout, "Authors: Benjamin Mezger, Guilherme Devincenzi. 2017\n");
+
 }
 
 int main(int argc, char **argv){
